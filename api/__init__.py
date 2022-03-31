@@ -2,4 +2,6 @@ from flask import Flask
 
 app = Flask(__name__)
 
-from api import routes
+users_data=[]
+
+from api import userRoute
