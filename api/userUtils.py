@@ -11,7 +11,7 @@ def validateUserData(requestJSON):
     try:
         posibleId= requestJSON["id_user"]
 
-        if idExists(posibleId):
+        if userIdExist(posibleId):
             errors.append('Id ya registrada')
         else:
             data["id_user"] = posibleId
@@ -61,7 +61,7 @@ def updateUserFields(requestJSON):
     try:
         idToUpdate = requestJSON["id_user"]
 
-        if idExists(idToUpdate):
+        if userIdExist(idToUpdate):
 
             updateData = {}
 
@@ -113,7 +113,7 @@ def searchUser(idToSearch):
     
     errors = []
     
-    if idExists(idToSearch):
+    if userIdExist(idToSearch):
         for user in users_data:
             if user['id_user'] == idToSearch:
                 return [user, None]
@@ -121,9 +121,17 @@ def searchUser(idToSearch):
         errors.append('Id no registrada')
 
     return [None,errors]
-        
 
-def idExists(id):
+
+def isUserAvailable(idToSearch):
+    if userIdExist(idToSearch):
+        for user in users_data:
+            if user['id_user'] == idToSearch:
+                return user["available"]
+
+
+
+def userIdExist(id):
     posiblesIds = []
     for user in users_data:
         try:

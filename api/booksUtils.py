@@ -8,7 +8,7 @@ def createBook(books):
     try:
         posibleId= books["id_book"]
 
-        if idExists(posibleId):
+        if bookIdExist(posibleId):
             errors.append('Id ya registrada')
         else:
             data["id_book"] = posibleId
@@ -36,7 +36,7 @@ def updateBookFields(book):
     try:
         idToUpdate = book["id_book"]
 
-        if idExists(idToUpdate):
+        if bookIdExist(idToUpdate):
 
             updateData = {}
 
@@ -65,7 +65,7 @@ def deleteBookById(book_id):
 
     print(books_data)
     
-    if idExists(book_id):
+    if bookIdExist(book_id):
 
 
         for book in books_data:
@@ -112,8 +112,40 @@ def serchBookByAuthorOrTitle(args):
     
     return dataFound
 
+# , updateCopies, , 
 
-def idExists(idE):
+def isBookAvailable(idB):
+    if bookIdExist(idB):
+        for book in books_data:
+            if book['id_book'] == idB:
+                return (book['book_available_copies']>0)
+
+def searchBookById(idB):
+    if bookIdExist(idB):
+        for book in books_data:
+            if book['id_book'] == idB:
+                return book
+
+def updateCopies(idB, increase):
+    if bookIdExist(idB):
+       for book in books_data:
+            if book['id_book'] == idB:
+                availableCopies =book["book_available_copies"]
+                unavailableCopies =book["book_unavailable_copies"]
+
+                if increase:
+                    availableCopies+=1
+                    unavailableCopies-=1
+                else:
+                    availableCopies-=1
+                    unavailableCopies+=1
+
+                validationRes = updateBookFields({"id_book":idB, "book_available_copies":availableCopies, "book_unavailable_copies":unavailableCopies})
+                return True
+                
+    return False
+    
+def bookIdExist(idE):
     posiblesIds = []
     for book in books_data:
         try:
