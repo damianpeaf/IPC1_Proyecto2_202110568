@@ -109,6 +109,37 @@ def borrowIdExist(idB):
     return (idB in posiblesIds)
 
 
+def getReportByUserId(idU, returned):
+
+    errors = []
+    data = []
+
+    if idU is not None:
+        if(userIdExist(idU)):
+
+            for borrow in borrow_data:
+
+                clause = True
+                if returned == True:
+                    clause = (borrow['id_user'] == idU and borrow['returned'] == True)
+                elif returned == False:
+                    clause = (borrow['id_user'] == idU and borrow['returned'] == False)
+                else:
+                    clause = (borrow['id_user'] == idU)
+
+                if clause:
+                    data.append(borrow)
+
+            return [data, False]
+
+        else:
+            errors.append('No existe usuario con dicha ID')
+    else:
+        errors.append('El id de usuario es requerida')
+
+    return [False, errors]
+
+
 def isBorrowReturned(idB):
     for borrow in borrow_data:
         if borrow['id_borrow'] == idB:
