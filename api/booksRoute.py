@@ -1,6 +1,4 @@
-from re import A
-from urllib import response
-from flask import request
+from flask import request, jsonify
 from api import app
 from api import books_data
 from api.booksUtils import createBook, updateBookFields, deleteBookById, serchBookByAuthorOrTitle
@@ -16,6 +14,7 @@ from api.booksUtils import createBook, updateBookFields, deleteBookById, serchBo
 # copies: copias no disponibles para prestar.
 # Copies: total de copias existentes.
 
+
 @app.route("/book", methods=['POST'])
 def createBooks():
 
@@ -30,26 +29,29 @@ def createBooks():
         if validationRes[0]:
             books_data.append(validationRes[0])
 
-        messagePerBook.append(validationRes[1])        
+        messagePerBook.append(validationRes[1])
 
-    response= {"msg": messagePerBook,"status": 200}
+    response = {"msg": messagePerBook, "status": 200}
 
-    return response
+    return jsonify(response)
+
 
 @app.route("/book", methods=['PUT'])
 def updateBook():
 
     validationRes = updateBookFields(request.json)
-    response={}
+    response = {}
 
     if validationRes[0] == 'Modificado':
-        response= {"msg": "Modificado correctamente","status": 200}
+        response = {"msg": "Modificado correctamente", "status": 200}
     else:
-        response= {"msg": "Error al modificar ","status": 400, "errors": validationRes[1]}
+        response = {"msg": "Error al modificar ",
+                    "status": 400, "errors": validationRes[1]}
 
-    print(books_data)
+    # print(books_data)
 
-    return response
+    return jsonify(response)
+
 
 @app.route("/book/<book_id>", methods=['DELETE'])
 def deleteBook(book_id):
@@ -57,10 +59,11 @@ def deleteBook(book_id):
 
     validationRes = deleteBookById(book_id)
     if validationRes[0]:
-        response= validationRes[0]
+        response = validationRes[0]
     else:
-        response= {"msg": "Registro eliminado ","status": 200}
-    return response
+        response = {"msg": "Registro eliminado ", "status": 200}
+    return jsonify(response)
+
 
 @app.route("/book", methods=['GET'])
 def searchBook():
@@ -69,6 +72,6 @@ def searchBook():
 
     searchResp = serchBookByAuthorOrTitle(args)
 
-    response = {"results found":searchResp}
+    response = {"results found": searchResp}
 
-    return response
+    return jsonify(response)

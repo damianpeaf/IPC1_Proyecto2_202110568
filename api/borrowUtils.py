@@ -5,7 +5,37 @@ from api.booksUtils import isBookAvailable, updateCopies, bookIdExist, searchBoo
 
 borrowIdCorrelative = 1
 
-# today = date.today()
+
+def returnBook(borrow_id):
+    errors = []
+
+    borrow_id = int(borrow_id)
+
+    print('ID recibida ', borrow_id)
+
+    if borrowIdExist(borrow_id):
+        if not isBorrowReturned(borrow_id):
+
+            borrowToModify = searchBorrowById(borrow_id)
+            bookBorrow = borrowToModify['book']
+            bookIdBorrow = bookBorrow['id_book']
+
+            updateCopies(bookIdBorrow, True)
+
+            for borrow in borrow_data:
+                if borrow['id_borrow'] == borrow_id:
+
+                    updateData = {"returned": True}
+                    borrow.update(updateData)
+                    return [True, errors]
+
+        else:
+            errors.append('El prestamo ya ha sido devuelto')
+    else:
+        errors.append('No existe la ID del prestamo')
+
+    return [False, errors]
+
 
 def createNewBorrow(borrowInfo):
     errors = []
@@ -19,18 +49,19 @@ def createNewBorrow(borrowInfo):
                 bookId = borrowInfo["id_book"]
                 if bookIdExist(bookId):
                     if isUserAvailable(userId):
-                        
+
                         if isBookAvailable(bookId):
                             updateCopies(bookId, False)
 
-                            book = searchBookById(bookId) 
+                            book = searchBookById(bookId)
                             global borrowIdCorrelative
                             correlativo = borrowIdCorrelative
 
                             dateStr = date.today().strftime("%d/%m/%Y")
 
-                            data = {"id_borrow":correlativo, "date": dateStr, "returned": False, "id_user": userId, "book":book}
-                            borrowIdCorrelative+=1
+                            data = {"id_borrow": correlativo, "date": dateStr,
+                                    "returned": False, "id_user": userId, "book": book}
+                            borrowIdCorrelative += 1
 
                             return [data, None]
                         else:
@@ -49,3 +80,42 @@ def createNewBorrow(borrowInfo):
 
     return [None, errors]
 
+
+def searchBorrow(idB):
+    errors = []
+
+    if borrowIdExist(idB):
+        borrow = searchBorrowById(idB)
+        return [borrow, None]
+    else:
+        errors.append('Id del prestamo no encontrada')
+
+    return [None, errors]
+
+
+def borrowIdExist(idB):
+    posiblesIds = []
+
+    print(borrow_data)
+
+    for borrow in borrow_data:
+        try:
+            posiblesIds.append(borrow['id_borrow'])
+        except:
+            pass
+
+    print('comparando ', idB, ' con ', posiblesIds, (idB in posiblesIds))
+
+    return (idB in posiblesIds)
+
+
+def isBorrowReturned(idB):
+    for borrow in borrow_data:
+        if borrow['id_borrow'] == idB:
+            return borrow['returned']
+
+
+def searchBorrowById(idB):
+    for borrow in borrow_data:
+        if borrow['id_borrow'] == idB:
+            return borrow
