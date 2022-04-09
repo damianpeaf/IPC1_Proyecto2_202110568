@@ -7,7 +7,7 @@ Damián Ignacio Peña Afre
 202110568
 
 ## Documentación: 
-[Aquí](https://github.com/damianpeaf/IPC1_Proyecto2_202110568/documentacion)
+[Aquí](https://documenter.getpostman.com/view/19336675/UVyxRts2)
 
 
 ## FrontEnd: 
