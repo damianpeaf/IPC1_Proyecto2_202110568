@@ -72,6 +72,11 @@ def searchBook():
 
     searchResp = serchBookByAuthorOrTitle(args)
 
-    response = {"results found": searchResp}
+    response = {"results": searchResp}
 
     return jsonify(response)
+
+
+@app.route("/book/all", methods=['GET'])
+def getAllBooks():
+    return jsonify({'results': books_data})

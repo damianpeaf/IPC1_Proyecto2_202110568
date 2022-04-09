@@ -17,7 +17,7 @@ def returnBook(borrow_id):
         if not isBorrowReturned(borrow_id):
 
             borrowToModify = searchBorrowById(borrow_id)
-            bookBorrow = borrowToModify['book']
+            bookBorrow = borrowToModify['borrow_book']
             bookIdBorrow = bookBorrow['id_book']
 
             updateCopies(bookIdBorrow, True)
@@ -59,8 +59,8 @@ def createNewBorrow(borrowInfo):
 
                             dateStr = date.today().strftime("%d/%m/%Y")
 
-                            data = {"id_borrow": correlativo, "date": dateStr,
-                                    "returned": False, "id_user": userId, "book": book}
+                            data = {"id_borrow": correlativo, "borrow_date": dateStr,
+                                    "returned": False, "id_user": userId, "borrow_book": book}
                             borrowIdCorrelative += 1
 
                             return [data, None]
@@ -121,9 +121,11 @@ def getReportByUserId(idU, returned):
 
                 clause = True
                 if returned == True:
-                    clause = (borrow['id_user'] == idU and borrow['returned'] == True)
+                    clause = (borrow['id_user'] ==
+                              idU and borrow['returned'] == True)
                 elif returned == False:
-                    clause = (borrow['id_user'] == idU and borrow['returned'] == False)
+                    clause = (borrow['id_user'] ==
+                              idU and borrow['returned'] == False)
                 else:
                     clause = (borrow['id_user'] == idU)
 

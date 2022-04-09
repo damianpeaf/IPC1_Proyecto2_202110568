@@ -152,6 +152,21 @@ def updateCopies(idB, increase):
     return False
 
 
+def bookReport():
+
+    data = []
+
+    for book in books_data:
+        book_title = book['book_title']
+        book_available_copies = book['book_available_copies']
+        book_unavailable_copies = book['book_unavailable_copies']
+
+        bookData = {'book_title' : book_title, 'book_available_copies':book_available_copies, 'book_unavailable_copies':book_unavailable_copies}
+        data.append(bookData)
+
+    return {'results': data}
+
+
 def bookIdExist(idE):
     posiblesIds = []
     for book in books_data:

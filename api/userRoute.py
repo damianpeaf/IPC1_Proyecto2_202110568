@@ -58,3 +58,8 @@ def getUser(user_id):
     else:
         response = {"msg": "Informacion no encontrada", "status": 400}
     return jsonify(response)
+
+
+@app.route("/user", methods=['GET'])
+def getAllUsers():
+    return jsonify({'results': users_data})
