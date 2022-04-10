@@ -26,7 +26,7 @@ def createUsser():
                     "status": 200, "datos": users_data}
     else:
         response = {"msg": "Error", "status": 400,
-                    "errors": validationRes[1], "datos": users_data}
+                    "errors": validationRes[1]}
 
     # print(users_data)
 
