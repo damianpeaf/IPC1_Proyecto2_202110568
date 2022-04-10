@@ -22,9 +22,11 @@ def createUsser():
 
     if validationRes[0]:
         users_data.append(validationRes[0])
-        response = {"msg": "Creado correctamente", "status": 200}
+        response = {"msg": "Creado correctamente",
+                    "status": 200, "datos": users_data}
     else:
-        response = {"msg": "Error", "status": 400, "errors": validationRes[1]}
+        response = {"msg": "Error", "status": 400,
+                    "errors": validationRes[1], "datos": users_data}
 
     # print(users_data)
 
