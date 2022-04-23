@@ -22,7 +22,15 @@ def createBook(books):
 
     for key in keys:
         try:
-            data[key] = books[key]
+            
+            if type(books[key])== str:
+                if len(books[key])>0:
+                    data[key] = books[key]
+                else:
+                    errors.append('El atributo ' + key+' no puede estar vacio')
+            else:
+                data[key] = books[key]
+
         except KeyError:
             errors.append('El atributo ' + key+' es requerido')
 
@@ -48,9 +56,17 @@ def updateBookFields(book):
 
             for key in keys:
                 try:
-                    updateData[key] = book[key]
+                    if type(book[key])== str:
+                        if len(book[key])>0:
+                            updateData[key] = book[key]
+                        else:
+                            errors.append('El atributo ' + key+' no puede estar vacio')
+                    else:
+                        updateData[key] = book[key]
                 except KeyError:
                     pass
+
+            # TODO aca estaba validando vacio
 
             for bok in books_data:
                 if bok['id_book'] == idToUpdate:

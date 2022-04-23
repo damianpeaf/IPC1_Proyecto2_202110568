@@ -42,7 +42,7 @@ def updateBook():
     validationRes = updateBookFields(request.json)
     response = {}
 
-    if validationRes[0] == 'Modificado':
+    if validationRes[0] == 'Modificado' and not len(validationRes[1]) > 0:
         response = {"msg": "Modificado correctamente", "status": 200}
     else:
         response = {"msg": "Error al modificar ",
