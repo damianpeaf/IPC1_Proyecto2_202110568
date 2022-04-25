@@ -171,7 +171,7 @@ def userIdExist(id):
 
 
 def isValidRole(role):
-    posibleRoles = ['estudiante', 'catedratico']
+    posibleRoles = ['estudiante', 'catedratico', 'catedrático']
     return role in posibleRoles
 
 
